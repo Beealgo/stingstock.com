@@ -23,11 +23,19 @@
         /* Basic styling for the canvas container */
         #canvas-container {
             width: 100%;
-            height: 500px;
+            /* ✅ FIXED: Responsive height for canvas */
+            height: 350px; /* Height for mobile */
             display: flex;
             justify-content: center;
             align-items: center;
             overflow: hidden;
+        }
+
+        /* Use a media query for larger screens */
+        @media (min-width: 768px) {
+            #canvas-container {
+                height: 500px; /* Height for desktop */
+            }
         }
 
         canvas {
@@ -35,10 +43,11 @@
         }
     </style>
 </head>
-<body class="bg-amber-50 text-bee-dark font-sans">
-<main class="container mx-auto px-6 py-16 md:py-24 grid md:grid-cols-2 gap-12 items-center">
+<body class="bg-amber-50 text-bee-dark font-sans flex flex-col min-h-screen">
 
-    <div class="text-center md:text-left">
+<main class="container mx-auto px-6 py-12 md:py-24 grid md:grid-cols-2 gap-12 items-center flex-grow">
+
+    <div class="text-center md:text-left order-2 md:order-1">
         <h1 class="text-4xl md:text-5xl font-extrabold leading-tight mb-4">
             Navigate the Market <span class="text-bee-honey">Buzz</span>.
         </h1>
@@ -48,15 +57,20 @@
         </p>
     </div>
 
-    <div id="canvas-container">
+    <div id="canvas-container" class="order-1 md:order-2">
     </div>
 </main>
 
-<!-- Bottom-right links -->
-<div class="absolute bottom-4 right-4 z-20 flex space-x-6 text-gray-700 text-sm">
-    <a href="/disclaimer.html" class="hover:underline">Disclaimer</a>
-    <a href="/privacy.html" class="hover:underline">Privacy</a>
-</div>
+<footer class="w-full bg-amber-50 py-6">
+    <div class="container mx-auto text-center text-sm">
+        <div class="space-x-6">
+            <a href="./disclaimer.html" class="hover:underline">Disclaimer</a>
+            <a href="./privacy.html" class="hover:underline">Privacy</a>
+        </div>
+        <p class="mt-4 text-gray-400">&copy; 2025 Sting Stock. All Rights Reserved.</p>
+    </div>
+</footer>
+
 
 <script type="importmap">
     {
@@ -73,49 +87,38 @@
     // === Basic Scene Setup ===
     const scene = new THREE.Scene();
     const canvasContainer = document.getElementById('canvas-container');
-
-    // Camera
     const camera = new THREE.PerspectiveCamera(75, canvasContainer.clientWidth / canvasContainer.clientHeight, 0.1, 1000);
     camera.position.z = 5;
 
-    // Renderer
     const renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
     renderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
     canvasContainer.appendChild(renderer.domElement);
 
-    // Lighting
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
     scene.add(ambientLight);
+
     const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
     directionalLight.position.set(5, 10, 7.5);
     scene.add(directionalLight);
 
-    // === Create Candlestick Group ===
     const candlestickGroup = new THREE.Group();
+    const greenMaterial = new THREE.MeshStandardMaterial({color: 0x26A69A, roughness: 0.5});
+    const redMaterial = new THREE.MeshStandardMaterial({color: 0xEF5350, roughness: 0.5});
 
-    // Material definitions
-    const greenMaterial = new THREE.MeshStandardMaterial({color: 0x26A69A, roughness: 0.5}); // Teal Green for bull candle
-    const redMaterial = new THREE.MeshStandardMaterial({color: 0xEF5350, roughness: 0.5});   // Red for bear candle
-
-    // Function to create a single candlestick
     function createCandle(material, bodyHeight, bodyY, wickHeight, wickY) {
         const candle = new THREE.Group();
-        // Body
         const bodyGeometry = new THREE.BoxGeometry(1, bodyHeight, 1);
         const body = new THREE.Mesh(bodyGeometry, material);
         body.position.y = bodyY;
-        // Wick
         const wickGeometry = new THREE.BoxGeometry(0.1, wickHeight, 0.1);
         const wick = new THREE.Mesh(wickGeometry, material);
         wick.position.y = wickY;
-
         candle.add(body);
         candle.add(wick);
         return candle;
     }
 
-    // Create and position candles
     const bullCandle = createCandle(greenMaterial, 1.5, 0, 2.5, 0);
     bullCandle.position.x = -1.2;
 
@@ -125,28 +128,19 @@
     candlestickGroup.add(bullCandle);
     candlestickGroup.add(bearCandle);
     scene.add(candlestickGroup);
-
-    // Initial rotation
     candlestickGroup.rotation.x = 0.2;
 
-    // === Responsiveness ===
     window.addEventListener('resize', () => {
         const width = canvasContainer.clientWidth;
         const height = canvasContainer.clientHeight;
-
         camera.aspect = width / height;
         camera.updateProjectionMatrix();
-
         renderer.setSize(width, height);
     });
 
-    // === Animation Loop ===
     function animate() {
         requestAnimationFrame(animate);
-
-        // Rotate the group
         candlestickGroup.rotation.y += 0.005;
-
         renderer.render(scene, camera);
     }
 
