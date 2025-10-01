@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disclaimer - StingStock</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'bee-yellow': '#FFD700', // Bright, vibrant yellow
+                        'bee-dark': '#2C2C2C',   // Deep charcoal, almost black
+                        'bee-honey': '#FFA800',  // A warmer, honey-like accent
+                        'bee-gray': '#F5F5F5',   // Light gray for backgrounds
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-amber-50 text-bee-dark font-sans flex flex-col min-h-screen">
+
+<!-- Top bar -->
+<header class="sticky top-0 z-20 bg-amber-50/80 backdrop-blur border-b border-amber-200">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+        <a href="/" class="text-2xl">🐝 Sting Stock</a>
+        <nav class="flex items-center gap-6 text-sm text-gray-700">
+            <a href="/" class="hover:underline">Home</a>
+            <a href="/disclaimer.html" class="hover:underline">Disclaimer</a>
+            <a href="/privacy.html" class="hover:underline">Privacy</a>
+        </nav>
+    </div>
+</header>
+
+<main class="container mx-auto px-6 py-16 flex-grow">
+    <div class="bg-white p-8 md:p-12 rounded-lg shadow-md max-w-4xl mx-auto">
+        <h1 class="text-3xl md:text-4xl font-extrabold text-bee-dark mb-6">Disclaimer</h1>
+        <div class="space-y-4 text-gray-700">
+            <p class="text-lg">
+                The information provided on the StingStock website is for informational and educational purposes only.
+                It should not be construed as financial, investment, legal, or tax advice.
+            </p>
+            <p>
+                StingStock and its contributors are not registered investment advisors, brokers, or dealers. The content
+                presented, including any tools, analyses, or opinions, is not a recommendation or solicitation to buy,
+                sell, or hold any security or financial product.
+            </p>
+            <p>
+                Investing in the stock market involves risk, including the potential loss of principal. Past performance
+                is not indicative of future results. You should always conduct your own research and due diligence
+                before making any investment decisions.
+            </p>
+            <p>
+                We strongly recommend that you consult with a qualified and licensed financial professional to determine
+                your own individual needs and to assess the suitability of any investment. By using this website, you
+                agree that StingStock is not liable for any direct or indirect loss or damage arising from your reliance
+                on any information contained herein.
+            </p>
+        </div>
+    </div>
+</main>
+</body>
+</html>

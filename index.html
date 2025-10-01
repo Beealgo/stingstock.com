@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StingStock - Your Market Hive</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'bee-yellow': '#FFD700', // Bright, vibrant yellow
+                        'bee-dark': '#2C2C2C',   // Deep charcoal, almost black
+                        'bee-honey': '#FFA800',  // A warmer, honey-like accent
+                        'bee-gray': '#F5F5F5',   // Light gray for backgrounds
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Basic styling for the canvas container */
+        #canvas-container {
+            width: 100%;
+            height: 500px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        canvas {
+            display: block;
+        }
+    </style>
+</head>
+<body class="bg-amber-50 text-bee-dark font-sans">
+<main class="container mx-auto px-6 py-16 md:py-24 grid md:grid-cols-2 gap-12 items-center">
+
+    <div class="text-center md:text-left">
+        <h1 class="text-4xl md:text-5xl font-extrabold leading-tight mb-4">
+            Navigate the Market <span class="text-bee-honey">Buzz</span>.
+        </h1>
+        <p class="text-lg text-gray-600 mb-8">
+            Stock insights and powerful analytics to help you build a sweeter portfolio. Don't just follow the market,
+            lead the swarm.
+        </p>
+    </div>
+
+    <div id="canvas-container">
+    </div>
+</main>
+
+<!-- Bottom-right links -->
+<div class="absolute bottom-4 right-4 z-20 flex space-x-6 text-gray-700 text-sm">
+    <a href="/disclaimer.html" class="hover:underline">Disclaimer</a>
+    <a href="/privacy.html" class="hover:underline">Privacy</a>
+</div>
+
+<script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.157.0/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.157.0/examples/jsm/"
+        }
+    }
+</script>
+
+<script type="module">
+    import * as THREE from 'three';
+
+    // === Basic Scene Setup ===
+    const scene = new THREE.Scene();
+    const canvasContainer = document.getElementById('canvas-container');
+
+    // Camera
+    const camera = new THREE.PerspectiveCamera(75, canvasContainer.clientWidth / canvasContainer.clientHeight, 0.1, 1000);
+    camera.position.z = 5;
+
+    // Renderer
+    const renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
+    renderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    canvasContainer.appendChild(renderer.domElement);
+
+    // Lighting
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+    scene.add(ambientLight);
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+    directionalLight.position.set(5, 10, 7.5);
+    scene.add(directionalLight);
+
+    // === Create Candlestick Group ===
+    const candlestickGroup = new THREE.Group();
+
+    // Material definitions
+    const greenMaterial = new THREE.MeshStandardMaterial({color: 0x26A69A, roughness: 0.5}); // Teal Green for bull candle
+    const redMaterial = new THREE.MeshStandardMaterial({color: 0xEF5350, roughness: 0.5});   // Red for bear candle
+
+    // Function to create a single candlestick
+    function createCandle(material, bodyHeight, bodyY, wickHeight, wickY) {
+        const candle = new THREE.Group();
+        // Body
+        const bodyGeometry = new THREE.BoxGeometry(1, bodyHeight, 1);
+        const body = new THREE.Mesh(bodyGeometry, material);
+        body.position.y = bodyY;
+        // Wick
+        const wickGeometry = new THREE.BoxGeometry(0.1, wickHeight, 0.1);
+        const wick = new THREE.Mesh(wickGeometry, material);
+        wick.position.y = wickY;
+
+        candle.add(body);
+        candle.add(wick);
+        return candle;
+    }
+
+    // Create and position candles
+    const bullCandle = createCandle(greenMaterial, 1.5, 0, 2.5, 0);
+    bullCandle.position.x = -1.2;
+
+    const bearCandle = createCandle(redMaterial, 1, 0.5, 2.2, 0.6);
+    bearCandle.position.x = 1.2;
+
+    candlestickGroup.add(bullCandle);
+    candlestickGroup.add(bearCandle);
+    scene.add(candlestickGroup);
+
+    // Initial rotation
+    candlestickGroup.rotation.x = 0.2;
+
+    // === Responsiveness ===
+    window.addEventListener('resize', () => {
+        const width = canvasContainer.clientWidth;
+        const height = canvasContainer.clientHeight;
+
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+
+        renderer.setSize(width, height);
+    });
+
+    // === Animation Loop ===
+    function animate() {
+        requestAnimationFrame(animate);
+
+        // Rotate the group
+        candlestickGroup.rotation.y += 0.005;
+
+        renderer.render(scene, camera);
+    }
+
+    animate();
+</script>
+
+</body>
+</html>
