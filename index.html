@@ -2,10 +2,27 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='-.1em' x='-.05em' font-size='100'%3E%F0%9F%90%9D%3C/text%3E%3C/svg%3E">
-    
-    <title>StingStock - Your Market Hive</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>StingStock - Daily Market Buzz</title>
+    <meta name="description" content="The day's biggest market news in one short brief: what happened, which sectors and indices it moves, and links to the original sources.">
+    <meta name="theme-color" content="#FFFBEB">
+    <link rel="canonical" href="https://stingstock.com/">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%90%9D%3C/text%3E%3C/svg%3E">
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="StingStock">
+    <meta property="og:url" content="https://stingstock.com/">
+    <meta property="og:title" content="StingStock - Daily Market Buzz">
+    <meta property="og:description" content="The day's biggest market news in one short brief: what happened, which sectors and indices it moves, and links to the original sources.">
+    <meta property="og:image" content="https://stingstock.com/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Sting Stock Daily Buzz - the day's market news in one brief">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="StingStock - Daily Market Buzz">
+    <meta name="twitter:description" content="The day's biggest market news in one short brief: what happened, which sectors and indices it moves, and links to the original sources.">
+    <meta name="twitter:image" content="https://stingstock.com/og-image.png">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -22,21 +39,14 @@
         }
     </script>
     <style>
-        /* Basic styling for the canvas container */
         #canvas-container {
             width: 100%;
-            /* ✅ FIXED: Responsive height for canvas */
-            height: 350px; /* Height for mobile */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
+            height: 280px;
         }
 
-        /* Use a media query for larger screens */
         @media (min-width: 768px) {
             #canvas-container {
-                height: 500px; /* Height for desktop */
+                height: 480px;
             }
         }
 
@@ -47,24 +57,34 @@
 </head>
 <body class="bg-amber-50 text-bee-dark font-sans flex flex-col min-h-screen">
 
-<main class="container mx-auto px-6 py-12 md:py-24 grid md:grid-cols-2 gap-12 items-center flex-grow">
+<header class="h-12 sm:h-14 bg-amber-50"></header>
+
+<main class="max-w-6xl w-full mx-auto px-4 sm:px-6 py-8 md:py-16 grid md:grid-cols-2 gap-6 md:gap-12 items-center flex-grow">
 
     <div class="text-center md:text-left order-2 md:order-1">
-        <h1 class="text-4xl md:text-5xl font-extrabold leading-tight mb-4">
-            Navigate the Market <span class="text-bee-honey">Buzz</span>.
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight text-balance mb-4 md:mb-6">
+            Your Daily Market <span class="text-bee-honey">Buzz</span>.
         </h1>
-        <p class="text-lg text-gray-600 mb-8">
-            Stock insights and powerful analytics to help you build a sweeter portfolio. Don't just follow the market,
-            lead the swarm.
+        <p class="text-lg md:text-xl text-gray-600 max-w-xl mx-auto md:mx-0">
+            The day's biggest market news, boiled down to one short brief.
+        </p>
+        <ul class="mt-6 md:mt-8 space-y-3 text-left max-w-md mx-auto md:mx-0">
+            <li class="flex gap-3"><span aria-hidden="true">📰</span><span><b>The story</b> - what happened and why it matters</span></li>
+            <li class="flex gap-3"><span aria-hidden="true">🎯</span><span><b>The impact</b> - sectors, indices and market mood it touches</span></li>
+            <li class="flex gap-3"><span aria-hidden="true">🔗</span><span><b>The sources</b> - links to the original reporting</span></li>
+        </ul>
+        <p class="mt-6 md:mt-8 text-sm text-gray-500">
+            News summaries for information only - not trading signals or investment advice.
+            <a href="./disclaimer.html" class="underline hover:text-bee-dark">Read the disclaimer</a>.
         </p>
     </div>
 
-    <div id="canvas-container" class="order-1 md:order-2">
+    <div id="canvas-container" class="order-1 md:order-2 min-w-0" aria-hidden="true">
     </div>
 </main>
 
 <footer class="w-full bg-amber-50 py-6">
-    <div class="container mx-auto text-center text-sm">
+    <div class="container mx-auto px-4 text-center text-sm">
         <div class="space-x-6">
             <a href="./disclaimer.html" class="hover:underline">Disclaimer</a>
             <a href="./privacy.html" class="hover:underline">Privacy</a>
@@ -90,11 +110,11 @@
     const scene = new THREE.Scene();
     const canvasContainer = document.getElementById('canvas-container');
     const camera = new THREE.PerspectiveCamera(75, canvasContainer.clientWidth / canvasContainer.clientHeight, 0.1, 1000);
-    camera.position.z = 5;
+    camera.position.z = 3.8;
 
     const renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
-    renderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
+    // Capped: 3x phones would render 9x the pixels for no visible gain.
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     canvasContainer.appendChild(renderer.domElement);
 
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
@@ -129,16 +149,20 @@
 
     candlestickGroup.add(bullCandle);
     candlestickGroup.add(bearCandle);
+    candlestickGroup.position.y = -0.3;
     scene.add(candlestickGroup);
     candlestickGroup.rotation.x = 0.2;
 
-    window.addEventListener('resize', () => {
+    function fitCameraToContainer() {
         const width = canvasContainer.clientWidth;
         const height = canvasContainer.clientHeight;
         camera.aspect = width / height;
         camera.updateProjectionMatrix();
         renderer.setSize(width, height);
-    });
+    }
+
+    fitCameraToContainer();
+    new ResizeObserver(fitCameraToContainer).observe(canvasContainer);
 
     function animate() {
         requestAnimationFrame(animate);

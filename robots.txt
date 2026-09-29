@@ -1,2 +1,12 @@
+# Search engines stay out; link-preview bots may fetch pages so shares show a card.
+User-agent: Twitterbot
+User-agent: facebookexternalhit
+User-agent: LinkedInBot
+User-agent: Slackbot-LinkExpanding
+User-agent: Discordbot
+User-agent: TelegramBot
+User-agent: WhatsApp
+Allow: /
+
 User-agent: *
 Disallow: /
